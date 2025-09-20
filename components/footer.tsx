@@ -3,8 +3,14 @@ import { ButtonLink } from "@/common/button"
 import { DarkLightImageAutoscale } from "@/common/dark-light-image"
 import type { DarkLightImageFragment, FooterFragment } from "@/lib/basehub/fragments"
 import { BaseHubImage } from "basehub/next-image"
+import Image from "next/image"
 import { Link } from "lucide-react"
 import { ThemeSwitcher } from "./theme-switcher"
+
+// Check if URL is from BaseHub
+const isBaseHubImage = (url: string) => {
+  return url.includes('basehub.earth') || url.includes('assets.basehub.com');
+}
 
 export const Footer = ({
   footer,
@@ -43,6 +49,9 @@ export const Footer = ({
 
         <ul className="col-span-2 col-start-1 row-start-3 flex w-full items-center gap-x-3.5 gap-y-4 sm:col-span-1 sm:col-start-3 sm:row-start-2 sm:w-auto sm:flex-wrap sm:justify-self-end">
           {footer.socialLinks.map((link) => {
+            const imageUrl = link.icon?.url ?? "";
+            const useBaseHubImage = isBaseHubImage(imageUrl);
+            
             return (
               <li key={link._title} className="shrink-0 sm:first:ml-auto">
                 <ButtonLink
@@ -51,7 +60,11 @@ export const Footer = ({
                   href={link.url}
                   target="_blank"
                 >
-                  <BaseHubImage alt={link._title} height={24} src={link.icon?.url ?? ""} width={24} />
+                  {useBaseHubImage ? (
+                    <BaseHubImage alt={link._title} height={24} src={imageUrl} width={24} />
+                  ) : (
+                    <Image alt={link._title} height={24} src={imageUrl} width={24} />
+                  )}
                 </ButtonLink>
               </li>
             )
