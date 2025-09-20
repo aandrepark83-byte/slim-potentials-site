@@ -1,24 +1,12 @@
 import type React from "react"
 import "./globals.css"
-import { Playfair_Display, Source_Sans_3 as Source_Sans_Pro } from "next/font/google"
 import { Providers } from "./providers"
 import { Newsletter } from "./_sections/newsletter"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 
-const playfairDisplay = Playfair_Display({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-heading",
-  weight: ["400", "600", "700"],
-})
-
-const sourceSansPro = Source_Sans_Pro({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-body",
-  weight: ["300", "400", "600", "700"],
-})
+// Use fallback fonts for reliable builds
+const fontVariables = "--font-heading:serif --font-body:system-ui,sans-serif"
 
 const siteData = {
   settings: {
@@ -87,7 +75,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html suppressHydrationWarning lang="en">
       <body
-        className={`min-h-svh max-w-[100vw] bg-background text-foreground ${playfairDisplay.variable} ${sourceSansPro.variable} font-body`}
+        className={`min-h-svh max-w-[100vw] bg-background text-foreground font-body`}
+        style={{ "--font-heading": "serif", "--font-body": "system-ui, sans-serif" } as React.CSSProperties}
       >
         <Providers>
           <Header logo={siteData.settings.logo} header={siteData.header} />
